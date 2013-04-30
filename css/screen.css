@@ -3,6 +3,9 @@ ul {
   margin: 0;
   padding: 0;
 }
+li {
+  margin-bottom: 15px;
+}
 a {
   text-decoration: none;
 }
@@ -17,4 +20,16 @@ a {
 }
 .basic-tabs {
   margin-bottom: 40px;
+}
+label {
+  width: 170px;
+  vertical-align: middle;
+  display: inline-block;
+}
+input[type="password"],
+input[type="text"] {
+  width: 300px;
+  padding: 5px;
+  border: 1px solid #9e9fa0;
+  border-radius: 2px;
 }

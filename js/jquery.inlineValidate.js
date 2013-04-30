@@ -10,7 +10,20 @@
 
   var pluginName = 'validateInline',
       defaults = {
-      	// defualt options
+      	passwordField: ".validate-password",
+        passwordConfirmField: ".validate-confirm",
+        errorClass: "validate-error",
+        validClass: "validate-valid",
+        errorIcon: null,
+        validIcon: null,
+        useCssIcons: false,
+        live: true,
+        errorsToValidate: {
+          noSpaces: true,
+          hasNumbers: true,
+          hasLetters: true,
+          length: 8
+        }
       };
 
   function Plugin(element, options) {
@@ -39,4 +52,3 @@
   };
 
 })(jQuery, window, document);
-
