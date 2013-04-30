@@ -2,8 +2,8 @@
   "framework": "jasmine",
   "src_files": [
     "js/jquery.min.js",
-    "js/jquery.inlineValidate.js",
     "test/lib/jasmine-jquery.js",
+    "js/jquery.inlineValidate.js",
     "test/spec/inlineValidate_spec.js"
   ]
 }

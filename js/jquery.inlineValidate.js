@@ -8,14 +8,14 @@
 
 ;(function($, window, document, undefined) {
 
-  var pluginName = 'validateInline',
+  var pluginName = 'inlineValidate',
       defaults = {
       	passwordField: ".validate-password",
         passwordConfirmField: ".validate-confirm",
         errorClass: "validate-error",
         validClass: "validate-valid",
-        errorIcon: null,
-        validIcon: null,
+        errorIcon: "",
+        validIcon: "",
         useCssIcons: false,
         live: true,
         errorsToValidate: {
@@ -32,17 +32,47 @@
     this._defaults = defaults;
     this._name = pluginName;
     this.init();
+    var that;
   };
 
   Plugin.prototype = {
 
     init: function() {
-    	console.log("hello world!")
+      that = this;
     },
 
+    // Validation method objects
+    methods: {
+
+      // Validate that there are no spaces
+      validateNoSpaces: function(val) {
+        if(that.options.errorsToValidate.noSpaces) {
+          return val.indexOf(' ') == -1 ? true : false;
+        }
+      },
+
+      // Validate that there is at least one number
+      validateNumbers: function(val) {
+        if(that.options.errorsToValidate.hasNumbers) {
+          return /\d/.test(val);
+        }
+      },
+
+      // Validate that there is at least one letter
+      validateLetters: function(val) {
+        if(that.options.errorsToValidate.hasLetters) {
+          return /[A-Z]/.test(val) || /[a-z]/.test(val);
+        }
+      },
+
+      // Validate password length
+      validateLength: function(val) {
+        return val.length >= that.options.errorsToValidate.length ? true : false;
+      }
+    }
   };
 
-  // preventing against multiple instantiations
+  // Instantiating the plugin once per element
   $.fn[pluginName] = function(options) {
     return this.each(function() {
       if (!$.data(this, 'plugin_' + pluginName)) {
