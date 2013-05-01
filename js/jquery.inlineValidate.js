@@ -27,12 +27,12 @@
       };
 
   function Plugin(element, options) {
+    var that;
     this.element = $(element);                      
     this.options = $.extend({}, defaults, options);
     this._defaults = defaults;
     this._name = pluginName;
     this.init();
-    var that;
   };
 
   Plugin.prototype = {
