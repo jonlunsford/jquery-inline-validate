@@ -22,6 +22,7 @@
           noSpaces: true,
           hasNumbers: true,
           hasLetters: true,
+          isMatching: true,
           length: 8
         }
       };
@@ -32,6 +33,7 @@
     this.options = $.extend({}, defaults, options);
     this._defaults = defaults;
     this._name = pluginName;
+    this.errors = this.options.errorsToValidate;
     this.init();
   };
 
@@ -39,6 +41,28 @@
 
     init: function() {
       that = this;
+    },
+
+    addError: function(errorName) {
+      this.errors[errorName] = false;
+    },
+
+    clearErrors: function() {
+      for(error in this.errors) {
+        this.errors[error] = true
+      }
+    },
+
+    checkForErrors: function() {
+      for(error in this.errors) {
+        return this.errors[error] === false ? true : false;
+      }
+    },
+
+    validateWithAll: function(val) {
+      for(method in this.methods) {
+        return this.methods[method].call(this, val);
+      }
     },
 
     // Validation method objects
@@ -68,6 +92,13 @@
       // Validate password length
       validateLength: function(val) {
         return val.length >= that.options.errorsToValidate.length ? true : false;
+      },
+
+      // Validate matching
+      validateMatching: function(val1, val2) {
+        if(that.options.errorsToValidate.isMatching) {
+          return val1 === val2 ? true : false;
+        }
       }
     }
   };

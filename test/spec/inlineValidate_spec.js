@@ -93,6 +93,37 @@ describe("inlineValidator", function() {
       expect(pluginData.methods.validateLength("ab123456")).toBe(true);
     });
 
+    it("Should check to see if two values match", function() {
+      expect(pluginData.methods.validateMatching("1234ab", "123b")).toBe(false)
+      expect(pluginData.methods.validateMatching("1234ab", "1234ab")).toBe(true)
+    });
+
+    it("Should add errors to the defined errors object", function() {
+      pluginData.addError("noSpaces");
+      expect(pluginData.options.errorsToValidate.noSpaces).toBe(false);
+    });
+
+    it("Should be able to clear / reset all errors", function() {
+      pluginData.addError("noSpaces");
+      pluginData.clearErrors();
+      expect(pluginData.options.errorsToValidate.noSpaces).toBe(true)
+    });
+
+    it("Should check to see if any errors exist", function() {
+      pluginData.addError("noSpaces")
+      expect(pluginData.checkForErrors()).toBe(true)
+      pluginData.clearErrors()
+      expect(pluginData.checkForErrors()).toBe(false)
+    });
+
+    // it("Should run all validation methods on a given value", function() {
+    //   var validResult = pluginData.validateWithAll("123456ab"),
+    //       inValidResult = pluginData.validateWithAll("1h3b");
+      
+    //   expect(validResult).toBe(true);
+    //   expect(inValidResult).toBe(false);
+    // });
+
   });
 
 });
