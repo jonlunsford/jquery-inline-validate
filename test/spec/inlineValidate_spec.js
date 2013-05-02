@@ -90,7 +90,7 @@ describe("inlineValidator", function() {
 
     it("Should validate the length of a value based on length option passed in", function() {
       expect(pluginData.methods.charLength("ab3456")).toBe(false);
-      expect(pluginData.methods.charLength("ab123456")).toBe(true);
+      expect(pluginData.methods.charLength("ab12asdf")).toBe(true);
     });
 
     it("Should check to see if two values match", function() {
@@ -103,25 +103,22 @@ describe("inlineValidator", function() {
       expect(pluginData.options.errorsToValidate.noSpaces).toBe(false);
     });
 
-    it("Should be able to clear / reset all errors", function() {
-      pluginData.addError("noSpaces");
-      pluginData.clearErrors();
-      expect(pluginData.options.errorsToValidate.noSpaces).toBe(true)
-    });
-
     it("Should check to see if any errors exist", function() {
-      pluginData.addError("noSpaces")
-      expect(pluginData.checkForErrors()).toBe(true)
-      pluginData.clearErrors()
-      expect(pluginData.checkForErrors()).toBe(false)
-    });
-
-    it("Should run all validation methods on a given value", function() {
-      pluginData.validateWithAll("h");
-      
+      pluginData.addError("noSpaces");
       expect(pluginData.checkForErrors()).toBe(true);
     });
 
+    it("Should run all validation methods on a given value", function() {
+      pluginData.validateWithAll("hh");
+      expect(pluginData.checkForErrors()).toBe(true);
+    });
+
+    it("Should be able to clear / reset all errors", function() {
+      pluginData.addError("noSpaces");
+      pluginData.clearErrors();
+      expect(pluginData.options.errorsToValidate.noSpaces).toBe(true);
+    });
+    
   });
 
 });

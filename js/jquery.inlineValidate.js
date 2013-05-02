@@ -60,11 +60,10 @@
     },
 
     validateWithAll: function(val) {
-      for(method in this.methods) {
-        var result = this.methods[method].call(this, val) 
-        if(result == false) this.addError(method);
-        
-        console.log(result)
+      for(method in this.methods) { 
+        var result = this.methods[method].call(this, val); 
+        if(result === false) this.addError(method); 
+        // console.log("method = " + method + ", result = " + result + ", value = " + val)
       }
     },
 
@@ -99,7 +98,7 @@
 
       // Validate matching
       isMatching: function(val1, val2) {
-        if(that.options.errorsToValidate.isMatching && val2 != null) {
+        if(that.options.errorsToValidate.isMatching) {
           return val1 === val2 ? true : false;
         }
       }
