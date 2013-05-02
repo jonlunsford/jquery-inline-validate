@@ -23,7 +23,7 @@
           hasNumbers: true,
           hasLetters: true,
           isMatching: true,
-          length: 8
+          charLength: 8
         }
       };
 
@@ -61,7 +61,10 @@
 
     validateWithAll: function(val) {
       for(method in this.methods) {
-        return this.methods[method].call(this, val);
+        var result = this.methods[method].call(this, val) 
+        if(result == false) this.addError(method);
+        
+        console.log(result)
       }
     },
 
@@ -69,34 +72,34 @@
     methods: {
 
       // Validate that there are no spaces
-      validateNoSpaces: function(val) {
+      noSpaces: function(val) {
         if(that.options.errorsToValidate.noSpaces) {
           return val.indexOf(' ') == -1 ? true : false;
         }
       },
 
       // Validate that there is at least one number
-      validateNumbers: function(val) {
+      hasNumbers: function(val) {
         if(that.options.errorsToValidate.hasNumbers) {
           return /\d/.test(val);
         }
       },
 
       // Validate that there is at least one letter
-      validateLetters: function(val) {
+      hasLetters: function(val) {
         if(that.options.errorsToValidate.hasLetters) {
           return /[A-Z]/.test(val) || /[a-z]/.test(val);
         }
       },
 
       // Validate password length
-      validateLength: function(val) {
-        return val.length >= that.options.errorsToValidate.length ? true : false;
+      charLength: function(val) {
+        return val.length >= that.options.errorsToValidate.charLength ? true : false;
       },
 
       // Validate matching
-      validateMatching: function(val1, val2) {
-        if(that.options.errorsToValidate.isMatching) {
+      isMatching: function(val1, val2) {
+        if(that.options.errorsToValidate.isMatching && val2 != null) {
           return val1 === val2 ? true : false;
         }
       }

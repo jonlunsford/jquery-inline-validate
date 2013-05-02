@@ -74,28 +74,28 @@ describe("inlineValidator", function() {
   describe("Methods", function() {
 
     it("Should validate that there are no spaces in a value", function() {
-      expect(pluginData.methods.validateNoSpaces("password w space")).toBe(false);
-      expect(pluginData.methods.validateNoSpaces("passwordNoSpace")).toBe(true);
+      expect(pluginData.methods.noSpaces("password w space")).toBe(false);
+      expect(pluginData.methods.noSpaces("passwordNoSpace")).toBe(true);
     });
 
     it("Should validate that there is at least one number present in a value", function() {
-      expect(pluginData.methods.validateNumbers("passwordNoNumber")).toBe(false);
-      expect(pluginData.methods.validateNumbers("passwordNumber1")).toBe(true);
+      expect(pluginData.methods.hasNumbers("passwordNoNumber")).toBe(false);
+      expect(pluginData.methods.hasNumbers("passwordNumber1")).toBe(true);
     });
 
     it("Should validate that there is at least one letter present in a value", function() {
-      expect(pluginData.methods.validateLetters("123456767")).toBe(false);
-      expect(pluginData.methods.validateLetters("123a456767")).toBe(true);
+      expect(pluginData.methods.hasLetters("123456767")).toBe(false);
+      expect(pluginData.methods.hasLetters("123a456767")).toBe(true);
     });
 
     it("Should validate the length of a value based on length option passed in", function() {
-      expect(pluginData.methods.validateLength("ab3456")).toBe(false);
-      expect(pluginData.methods.validateLength("ab123456")).toBe(true);
+      expect(pluginData.methods.charLength("ab3456")).toBe(false);
+      expect(pluginData.methods.charLength("ab123456")).toBe(true);
     });
 
     it("Should check to see if two values match", function() {
-      expect(pluginData.methods.validateMatching("1234ab", "123b")).toBe(false)
-      expect(pluginData.methods.validateMatching("1234ab", "1234ab")).toBe(true)
+      expect(pluginData.methods.isMatching("1234ab", "123b")).toBe(false)
+      expect(pluginData.methods.isMatching("1234ab", "1234ab")).toBe(true)
     });
 
     it("Should add errors to the defined errors object", function() {
@@ -116,13 +116,11 @@ describe("inlineValidator", function() {
       expect(pluginData.checkForErrors()).toBe(false)
     });
 
-    // it("Should run all validation methods on a given value", function() {
-    //   var validResult = pluginData.validateWithAll("123456ab"),
-    //       inValidResult = pluginData.validateWithAll("1h3b");
+    it("Should run all validation methods on a given value", function() {
+      pluginData.validateWithAll("h");
       
-    //   expect(validResult).toBe(true);
-    //   expect(inValidResult).toBe(false);
-    // });
+      expect(pluginData.checkForErrors()).toBe(true);
+    });
 
   });
 
