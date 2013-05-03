@@ -41,6 +41,7 @@
 
     init: function() {
       that = this;
+      this.attachEventHandlers("keyup");
     },
 
     addError: function(errorName) {
@@ -65,6 +66,37 @@
         if(result === false) this.addError(method); 
         // console.log("method = " + method + ", result = " + result + ", value = " + val)
       }
+    },
+
+    delegateValidationType: function(validationType, val) {
+      switch(validationType) {
+        case 'password':
+          this.validatePassword(val);
+          break;
+        case 'confirmPassword':
+          this.confirmMatch(val);
+          break;
+      }
+    },
+
+    attachEventHandlers: function(element, type) {
+      $(this.options.passwordField).on(eventType, this, function(e) {
+        that.delegateValidationType('validatePassword', value);
+      });
+
+      $(this.options.passwordConfirmField).on(eventType, this, function(e) {
+        that.delegateValidationType('confirmPassword', $(this).val())
+      });
+    },
+
+    validatePassword: function(val) {
+      for(methods in this.methods) {
+        if(method != "isMatching") {
+          this.methods[method].call(this, val);
+        }
+      }
+
+      return this.checkForErrors() ? console.log("show error") : console.log("hide error");
     },
 
     // Validation method objects
