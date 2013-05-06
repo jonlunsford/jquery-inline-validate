@@ -77,10 +77,10 @@
     delegateValidationType: function(validationType, val) {
       switch(validationType) {
         case 'password':
-          this.validatePassword(validationType, val);
+          this.validatePassword(validationType, val, this.confirmField.val());
           break;
         case 'confirmPassword':
-          this.validatePassword(validationType, val, this.passwordField.val());
+          this.validateMatching(val, this.passwordField.val());
           break;
       }
     },
@@ -97,19 +97,18 @@
 
     validatePassword: function(validationType, val1, val2) {
       this.clearErrors();
+      this.validateMatching(val1, val2);
       
-      if(val1 === '' && validationType === 'password') {
-        return this.toggleState(validationType, 'clear');
-      }
-
       for(method in this.methods) {
         if(method != "isMatching") {
           if(this.methods[method].call(this, val1) === false) this.addError(method);
-        } else if(method === "isMatching" && val2 != null) {
-          if(this.methods['isMatching'].call(this, val1, val2) === false) this.addError('isMatching');
-        }
+        } 
       }
       return this.checkForErrors() ? this.toggleState(validationType, 'error') : this.toggleState(validationType, 'valid');
+    },
+
+    validateMatching: function(val1, val2) {
+      return this.methods['isMatching'].call(this, val1, val2) ? this.toggleState("confirmPassword", 'valid') : this.toggleState('confirmPassword', 'error'); 
     },
 
     toggleState: function(type, state) {
@@ -138,7 +137,13 @@
         $(this).after("<i class='icon icon-valid' /><i class='icon icon-error' />");
       });
 
-      if(useCss) {}; // todo
+      if(this.options.useCssIcons) {
+        $(".icon-error").addClass('css-icon');
+        $(".icon-valid").addClass('css-icon');        
+      } else {
+        $(".icon-error").css('background', 'url(' + this.options.errorIcon + ') no-repeat center center');
+        $(".icon-valid").css('background', 'url(' + this.options.validIcon + ') no-repeat center center');
+      }
     },
 
     // Validation method objects
