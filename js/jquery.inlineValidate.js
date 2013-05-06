@@ -77,10 +77,10 @@
     delegateValidationType: function(validationType, val) {
       switch(validationType) {
         case 'password':
-          this.validatePassword(val);
+          this.validatePassword(validationType, val);
           break;
         case 'confirmPassword':
-          this.confirmMatch(val);
+          this.validatePassword(validationType, val, this.passwordField.val());
           break;
       }
     },
@@ -95,34 +95,50 @@
       });
     },
 
-    validatePassword: function(val) {
+    validatePassword: function(validationType, val1, val2) {
       this.clearErrors();
+      
+      if(val1 === '' && validationType === 'password') {
+        return this.toggleState(validationType, 'clear');
+      }
+
       for(method in this.methods) {
         if(method != "isMatching") {
-          if(this.methods[method].call(this, val) === false) this.addError(method);
+          if(this.methods[method].call(this, val1) === false) this.addError(method);
+        } else if(method === "isMatching" && val2 != null) {
+          if(this.methods['isMatching'].call(this, val1, val2) === false) this.addError('isMatching');
         }
       }
-      return this.checkForErrors() ? this.toggleState('password', 'error') : this.toggleState('password', 'valid');
+      return this.checkForErrors() ? this.toggleState(validationType, 'error') : this.toggleState(validationType, 'valid');
     },
 
     toggleState: function(type, state) {
-      var $icon = $(".icon");
+      var $errorIcon  = type === 'password' ? this.passwordField.siblings('.icon-error') : this.confirmField.siblings('.icon-error'),
+          $validIcon  = type === 'password' ? this.passwordField.siblings('.icon-valid') : this.confirmField.siblings('.icon-valid'),
+          $field      = type === 'password' ? this.passwordField : this.confirmField;
 
-      if(type === 'password') {
-        if(state === 'error') {
-          this.passwordField.toggleClass(this.options.validClass, this.options.errorClass);
-          $icon.css('display', 'inline-block').toggleClass("icon-valid icon-error");
-        } else if(state === 'valid') {
-          $icon.css('display', 'inline-block').toggleClass("icon-error icon-valid");;          
-          this.passwordField.toggleClass(this.options.errorClass, this.options.validClass);
-        }
+      if(state === 'error') {
+        $validIcon.hide()
+        $errorIcon.css('display', 'inline-block');
+        $field.removeClass(this.options.validClass).addClass(this.options.errorClass);
+      } else if(state === 'valid') {
+        $errorIcon.hide();
+        $validIcon.css('display', 'inline-block');          
+        $field.removeClass(this.options.errorClass).addClass(this.options.validClass);
+      } else if(state === 'clear') {
+        $errorIcon.hide();
+        $validIcon.hide();
       }
     },
 
     addIcons: function(useCss) {
+      var $fields = $(this.options.passwordField).add(this.options.passwordConfirmField);
+      $fields.each(function() {
+        $(this).parent().addClass('validate-field-parent');
+        $(this).after("<i class='icon icon-valid' /><i class='icon icon-error' />");
+      });
+
       if(useCss) {}; // todo
-      this.passwordField.parent().addClass('validate-field-parent');
-      this.passwordField.after("<i class='icon' />");
     },
 
     // Validation method objects
