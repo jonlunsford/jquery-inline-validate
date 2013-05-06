@@ -43,14 +43,14 @@ describe("inlineValidator", function() {
       expect(pluginData.options.passwordConfirmField).toEqual(".validate-confirm");
     });
 
-    it("Should have a default error class defined as a string and equal 'validate-error'", function() {
+    it("Should have a default error class defined as a string and equal 'input-validation-error'", function() {
       expect(pluginData.options.errorClass).toEqual(jasmine.any(String));
-      expect(pluginData.options.errorClass).toEqual("validate-error");
+      expect(pluginData.options.errorClass).toEqual("input-validation-error");
     });
 
-    it("Should have a default valid class defined as a string and equal 'validate-valid'", function() {
+    it("Should have a default valid class defined as a string and equal 'input-validation-valid'", function() {
       expect(pluginData.options.validClass).toEqual(jasmine.any(String));
-      expect(pluginData.options.validClass).toEqual("validate-valid");
+      expect(pluginData.options.validClass).toEqual("input-validation-valid");
     });
 
     it("Should have an option for an error icon image", function() {
