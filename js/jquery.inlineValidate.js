@@ -25,15 +25,15 @@
 
   var pluginName = 'inlineValidate',
       defaults = {
-      	passwordField: ".validate-password",          // String, selctor of password field to validate
-        passwordConfirmField: ".validate-confirm",    // String, seltor of password confrifm field to validate
+      	passwordField: ".validate-password",          // String, selector of password field to validate
+        passwordConfirmField: ".validate-confirm",    // String, selector of password confirm field to validate
         errorClass: "input-validation-error",         // String, class that will be added to input fields when an error is found
         validClass: "input-validation-valid",         // String, class that will be added to input fields when data is valid
         errorIcon: "",                                // String, url to error icon image
         validIcon: "",                                // String, url to valid icon image
         useCssIcons: false,                           // Boolean, whether to use css icons or not. If true, errorIcon and validIcon don't have to be provided.
         live: true,                                   // Boolean, whether or not validation is run in the keyup event
-        validLength: 8,                               // Integer, minumum length requirement for password
+        validLength: 8,                               // Integer, minimum length requirement for password
         errorsToValidate: {                           // Object, all validations that must be met. This object is updated and checked based on validation results
           noSpaces: true,                             // Boolean, default state for "noSpaces"                    
           hasNumbers: true,                           // Boolean, default state for "hasNumbers"
@@ -104,7 +104,7 @@
     **
     ** Checks to see if the errorsToValidate object contains any errors. 
     ** When a value is set to "false" in the errorsToValidate object 
-    ** it is considered an errlr.
+    ** it is considered an error.
     **
     ** Parameters:
     **  n/a
@@ -215,7 +215,7 @@
     /*
     ** Method: validateMatching
     **
-    ** validates the mathing of two values and sets the appropriate display state.
+    ** validates the matching of two values and sets the appropriate display state.
     **
     ** Parameters:
     **  val1: String, The first value to validate, the password
@@ -232,7 +232,7 @@
     /*
     ** Method: toggleState
     **
-    ** Sets the display state bases on paremeters passed in. Shows and hided icons, adds appropriate classes to input fields. 
+    ** Sets the display state bases on parameters passed in. Shows and hided icons, adds appropriate classes to input fields. 
     **
     ** Parameters:
     **  type: String, the type of state that should be toggled, "password" or "passwordConfirm"
@@ -343,13 +343,13 @@
       /*
       ** Method: charLength
       **
-      ** Checks to see if minumum length requirements have been met.
+      ** Checks to see if minimum length requirements have been met.
       **
       ** Parameters:
       **  val: String, value to check
       **
       ** Returns:
-      **  Boolean: false if the value is too short, true if the value is greate than or equal to the validLength option.
+      **  Boolean: false if the value is too short, true if the value is greater than or equal to the validLength option.
       */
 
       charLength: function(val) {
@@ -375,7 +375,7 @@
     }
   };
 
-  // Instantiating the plugin once per element
+  // Instantiating the plug-in once per element
   $.fn[pluginName] = function(options) {
     return this.each(function() {
       if (!$.data(this, 'plugin_' + pluginName)) {
