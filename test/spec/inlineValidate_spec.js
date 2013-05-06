@@ -90,7 +90,7 @@ describe("inlineValidator", function() {
 
     it("Should validate the length of a value based on length option passed in", function() {
       expect(pluginData.methods.charLength("ab3456")).toBe(false);
-      expect(pluginData.methods.charLength("ab12asdf")).toBe(true);
+      expect(pluginData.methods.charLength("ab12asdff")).toBe(true);
     });
 
     it("Should check to see if two values match", function() {

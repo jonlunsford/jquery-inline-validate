@@ -1,5 +1,5 @@
 $(function() {
   
-  $(".validate-password").inlineValidate();  
+  $(".validate").inlineValidate();  
 
 }); // end doc.ready

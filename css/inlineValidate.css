@@ -1,0 +1,15 @@
+.validate-password-inline .icon {
+  width: 25px;
+  height: 25px;
+  display: inline-block;
+  position: relative;
+  right: 29px;
+  top: 8px;
+  display: none;
+}
+.validate-password-inline .icon.icon-error {
+  background: #F00;
+}
+.validate-password-inline .icon.icon-valid {
+  background: green;
+}

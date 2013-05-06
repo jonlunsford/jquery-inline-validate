@@ -18,12 +18,13 @@
         validIcon: "",
         useCssIcons: false,
         live: true,
+        validLength: 8,
         errorsToValidate: {
           noSpaces: true,
           hasNumbers: true,
           hasLetters: true,
           isMatching: true,
-          charLength: 8
+          charLength: true
         }
       };
 
@@ -34,6 +35,8 @@
     this._defaults = defaults;
     this._name = pluginName;
     this.errors = this.options.errorsToValidate;
+    this.passwordField = $(this.options.passwordField)
+    this.confirmField = $(this.options.passwordConfirmField)
     this.init();
   };
 
@@ -41,7 +44,9 @@
 
     init: function() {
       that = this;
+      this.element.addClass("validate-password-inline")
       this.attachEventHandlers("keyup");
+      this.addIcons(this.options.useCssIcons);
     },
 
     addError: function(errorName) {
@@ -56,7 +61,9 @@
 
     checkForErrors: function() {
       for(error in this.errors) {
-        return this.errors[error] === false ? true : false;
+        if(this.errors[error] === false) {
+          return true;
+        }
       }
     },
 
@@ -64,7 +71,6 @@
       for(method in this.methods) { 
         var result = this.methods[method].call(this, val); 
         if(result === false) this.addError(method); 
-        // console.log("method = " + method + ", result = " + result + ", value = " + val)
       }
     },
 
@@ -79,9 +85,9 @@
       }
     },
 
-    attachEventHandlers: function(element, type) {
-      $(this.options.passwordField).on(eventType, this, function(e) {
-        that.delegateValidationType('validatePassword', value);
+    attachEventHandlers: function(eventType) {
+      this.passwordField.on(eventType, this, function(e) {
+        that.delegateValidationType('password', $(this).val());
       });
 
       $(this.options.passwordConfirmField).on(eventType, this, function(e) {
@@ -90,13 +96,33 @@
     },
 
     validatePassword: function(val) {
-      for(methods in this.methods) {
+      this.clearErrors();
+      for(method in this.methods) {
         if(method != "isMatching") {
-          this.methods[method].call(this, val);
+          if(this.methods[method].call(this, val) === false) this.addError(method);
         }
       }
+      return this.checkForErrors() ? this.toggleState('password', 'error') : this.toggleState('password', 'valid');
+    },
 
-      return this.checkForErrors() ? console.log("show error") : console.log("hide error");
+    toggleState: function(type, state) {
+      var $icon = $(".icon");
+
+      if(type === 'password') {
+        if(state === 'error') {
+          this.passwordField.toggleClass(this.options.validClass, this.options.errorClass);
+          $icon.css('display', 'inline-block').toggleClass("icon-valid icon-error");
+        } else if(state === 'valid') {
+          $icon.css('display', 'inline-block').toggleClass("icon-error icon-valid");;          
+          this.passwordField.toggleClass(this.options.errorClass, this.options.validClass);
+        }
+      }
+    },
+
+    addIcons: function(useCss) {
+      if(useCss) {}; // todo
+      this.passwordField.parent().addClass('validate-field-parent');
+      this.passwordField.after("<i class='icon' />");
     },
 
     // Validation method objects
@@ -104,35 +130,27 @@
 
       // Validate that there are no spaces
       noSpaces: function(val) {
-        if(that.options.errorsToValidate.noSpaces) {
-          return val.indexOf(' ') == -1 ? true : false;
-        }
+        return /\s/.test(val) ? false : true;
       },
 
       // Validate that there is at least one number
       hasNumbers: function(val) {
-        if(that.options.errorsToValidate.hasNumbers) {
-          return /\d/.test(val);
-        }
+        return /\d/.test(val);
       },
 
       // Validate that there is at least one letter
       hasLetters: function(val) {
-        if(that.options.errorsToValidate.hasLetters) {
-          return /[A-Z]/.test(val) || /[a-z]/.test(val);
-        }
+        return (/[a-zA-Z]/g).test(val);
       },
 
       // Validate password length
       charLength: function(val) {
-        return val.length >= that.options.errorsToValidate.charLength ? true : false;
+        return parseInt(val.length) > that.options.validLength ? true : false;
       },
 
       // Validate matching
       isMatching: function(val1, val2) {
-        if(that.options.errorsToValidate.isMatching) {
-          return val1 === val2 ? true : false;
-        }
+        return val1 === val2 ? true : false;
       }
     }
   };
