@@ -62,7 +62,7 @@ Inline Validate has some basic options.
 
 | Option                | Value                                                                                                                                                           |
 |:----------------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| passwordField         | *string* Default: ".validate-password", selector of password field to validate.                                                                                  |
+| passwordField         | *string* Default: ".validate-password", selector of password field to validate.                                                                                 |
 | passwordConfirmField  | *string* Default: ".validate-confirm", selector of password confirm field to validate.                                                                          |
 | errorClass            | *string* Default: "input-validation-error", class that will be added to input fields when an error is found.                                                    |
 | validClass            | *string* Default: "input-validation-valid", class that will be added to input fields when data is valid.                                                        |

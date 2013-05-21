@@ -46,12 +46,13 @@
   function Plugin(element, options) {
     var that;
     this.element = $(element);                      
+    this.element.addClass("validate-password-inline")
     this.options = $.extend({}, defaults, options);
     this._defaults = defaults;
     this._name = pluginName;
     this.errors = this.options.errorsToValidate;
-    this.passwordField = $(this.options.passwordField)
-    this.confirmField = $(this.options.passwordConfirmField)
+    this.passwordField = this.element.find(this.options.passwordField);
+    this.confirmField = this.element.find(this.options.passwordConfirmField);
     this.init();
   };
 
@@ -60,9 +61,8 @@
     // preliminary setup
     init: function() {
       that = this;
-      this.element.addClass("validate-password-inline")
-      this.attachEventHandlers("keyup");
       this.addIcons(this.options.useCssIcons);
+      this.attachEventHandlers("keyup", this.passwordField, this.confirmField);
     },
 
     /*
@@ -171,18 +171,25 @@
     **
     ** Parameters:
     **  eventType: String, the type of event to attach, default is keyup
-    **  
+    **  $passwordField: Object, the jQuery object of the password field to validate  
+    **  $confirmField: Object, the jQuery object of the password confirm field to validate
+    ** 
     ** Returns:
     **  n/a
     */
 
-    attachEventHandlers: function(eventType) {
-      this.passwordField.on(eventType, this, function(e) {
-        that.delegateValidationType('password', $(this).val());
+    attachEventHandlers: function(eventType, $passwordField, $confirmField) {
+      $passwordField.on(eventType, this, function(e) {
+        // Re-establishing context
+        that.passwordField  = $passwordField;
+        that.confirmField   = $confirmField;
+
+        if(e.keyCode != 9) that.delegateValidationType('password', $(this).val());
       });
 
-      $(this.options.passwordConfirmField).on(eventType, this, function(e) {
-        that.delegateValidationType('confirmPassword', $(this).val())
+      $confirmField.on(eventType, this, function(e) {
+        that.confirmField = $(this);
+        if(e.keyCode != 9) that.delegateValidationType('confirmPassword', $(this).val());
       });
     },
 
@@ -247,6 +254,7 @@
           $validIcon  = type === 'password' ? this.passwordField.siblings('.icon-valid') : this.confirmField.siblings('.icon-valid'),
           $field      = type === 'password' ? this.passwordField : this.confirmField;
 
+
       if(state === 'error') {
         $validIcon.hide()
         $errorIcon.css('display', 'inline-block');
@@ -274,7 +282,7 @@
     */
 
     addIcons: function(useCss) {
-      var $fields = $(this.options.passwordField).add(this.options.passwordConfirmField);
+      var $fields = this.passwordField.add(this.confirmField);
       $fields.each(function() {
         $(this).parent().addClass('validate-field-parent');
         $(this).after("<i class='icon icon-valid' /><i class='icon icon-error' />");
