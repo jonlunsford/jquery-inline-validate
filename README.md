@@ -47,7 +47,7 @@ $('#validate-me').inlineValidate({
   validIcon: '/img/my-valid-icon.png'   
 });
 ```
-Inline Validate has built in css icons for displaying errors, and valid states simply set ```useCssIcons: true```, you may need to tweak the css to fit your needs, like this:
+Inline Validate has built in css icons for displaying errors and valid states, simply set ```useCssIcons: true```, you may need to tweak the css to fit your needs, like this:
 
 ```JavaScript
   
@@ -73,10 +73,36 @@ Inline Validate has some basic options.
 | validLength           | *Integer* Default: 8, minimum length requirement for password                                                                                                   |
 | errorsToValidate      | *Object*  Default: noSpaces, hasNumbers, hasLetters, isMatching, and charLength. This is the object that tracks the valid state of these methods in the plugin. |
 
+### API
+---
+
+The API was built to be extensible so feel free to contribute, and keep an eye out for new methods in the future.
+
+### Usage
+
+The API is accessed through the data object attached to the form element you call the plugin on, link this:
+
+```JavaScript
+var plugin = $("#validate-me").data("plugin_inlineValidate");
+plugin.api("resetValidation");
+```
+If the API method takes arguments they must be passed in as an array, like this:
+
+```JavaScript
+var plugin = $("#validate-me").data("plugin_inlineValidate");
+plugin.api("apiMethod", ["arg1", "arg2", "arg3"]);
+```
+
+### Available methods
+
+|Method          | Params                                                                                 |
+|:---------------|:---------------------------------------------------------------------------------------|
+|resetValidation | *none*: Clear the icons, error state of the fields and clear the password field values |  
+
 ### Road map
 ---
 
 - [x] Add Tests.
 - [ ] Add links to demos / examples in documentation.
-- [ ] Add API for added more validation methods.
+- [x] Add API mechanism.
 - [x] Have a beer.

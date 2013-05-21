@@ -44,7 +44,6 @@
       };
 
   function Plugin(element, options) {
-    var that;
     this.element = $(element);                      
     this.element.addClass("validate-password-inline")
     this.options = $.extend({}, defaults, options);
@@ -54,13 +53,13 @@
     this.passwordField = this.element.find(this.options.passwordField);
     this.confirmField = this.element.find(this.options.passwordConfirmField);
     this.init();
+    this.api = function(method, args) { this.delegateApiMethod(method, args) }
   };
 
   Plugin.prototype = {
 
     // preliminary setup
     init: function() {
-      that = this;
       this.addIcons(this.options.useCssIcons);
       this.attachEventHandlers("keyup", this.passwordField, this.confirmField);
     },
@@ -179,6 +178,8 @@
     */
 
     attachEventHandlers: function(eventType, $passwordField, $confirmField) {
+      var that = this;
+      
       $passwordField.on(eventType, this, function(e) {
         // Re-establishing context
         that.passwordField  = $passwordField;
@@ -266,6 +267,8 @@
       } else if(state === 'clear') {
         $errorIcon.hide();
         $validIcon.hide();
+        $field.removeClass(this.options.errorClass);
+        $field.removeClass(this.options.validClass);
       }
     },
 
@@ -297,7 +300,25 @@
       }
     },
 
-    // Validation method objects, any new validation requirements should be added here
+    /*
+    ** Method: delegateApiMethod
+    **
+    ** Delegates to the specified API method within the publicMethods Object. 
+    **
+    ** Parameters:
+    **  method: String, the name of the api method to call.
+    **  args: Array, an array of arguments the specified api method required.
+    **
+    ** Returns:
+    **  Varies based on method called.
+    */
+
+    delegateApiMethod: function(method, args) {
+      this.publicMethods[method].apply(this, args);
+    },
+
+    // Validation methods object, any new validation requirements should be added here.
+    // Note that these methods are called with "call()" where a reference to the parent Plugin object (this) is passed in.
     methods: {
 
       /*
@@ -361,7 +382,7 @@
       */
 
       charLength: function(val) {
-        return parseInt(val.length) >= that.options.validLength ? true : false;
+        return parseInt(val.length) >= this.options.validLength ? true : false;
       },
 
       /*
@@ -379,6 +400,30 @@
 
       isMatching: function(val1, val2) {
         return val1 === val2 ? true : false;
+      }
+    },
+
+    // Public methods object, anything that should be exposed as an "API" should be added here.
+    // Note that these methods are called with "apply()" where a reference to the parent Plugin object (this) is passed in.
+    publicMethods: {
+
+      /*
+      ** Public Method: resetValidation
+      **
+      ** Clears validation icons and resets the password field values
+      **
+      ** Parameters:
+      **  n/a
+      **
+      ** Returns:
+      **  Appropriate display state of the validated fields
+      */
+
+      resetValidation: function() {
+        this.toggleState("password", "clear");
+        this.toggleState("confirm", "clear");
+        this.passwordField.val("");
+        this.confirmField.val("");
       }
     }
   };
