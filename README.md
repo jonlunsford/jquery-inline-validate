@@ -78,9 +78,9 @@ Inline Validate has some basic options.
 
 The API was built to be extensible so feel free to contribute, and keep an eye out for new methods in the future.
 
-### Usage
+#### Usage
 
-The API is accessed through the data object attached to the form element you call the plugin on, link this:
+The API is accessed through the data object attached to the form element you call the plugin on, like this:
 
 ```JavaScript
 var plugin = $("#validate-me").data("plugin_inlineValidate");
@@ -93,7 +93,7 @@ var plugin = $("#validate-me").data("plugin_inlineValidate");
 plugin.api("apiMethod", ["arg1", "arg2", "arg3"]);
 ```
 
-### Available methods
+#### Available methods
 
 |Method          | Params                                                                                 |
 |:---------------|:---------------------------------------------------------------------------------------|
