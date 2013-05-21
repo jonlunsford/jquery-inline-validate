@@ -424,6 +424,23 @@
         this.toggleState("confirm", "clear");
         this.passwordField.val("");
         this.confirmField.val("");
+      },
+
+      /*
+      ** Public Method: displayAllErrors
+      **
+      ** Displays all errors, useful if you need to trigger error states bases on other events, submit for example.
+      **
+      ** Parameters:
+      **  n/a
+      **
+      ** Returns:
+      **  Appropriate display state (error) of the validated fields
+      */
+
+      displayAllErrors: function() {
+        this.toggleState("password", "error");
+        this.toggleState("confirm", "error"); 
       }
     }
   };

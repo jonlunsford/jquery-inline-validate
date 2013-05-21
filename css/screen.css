@@ -33,3 +33,7 @@ input[type="text"] {
   border: 1px solid #9e9fa0;
   border-radius: 2px;
 }
+input[type="password"].input-validation-error,
+input[type="text"].input-validation-error {
+  border: 1px solid #BF4646;
+}

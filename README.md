@@ -95,9 +95,10 @@ plugin.api("apiMethod", ["arg1", "arg2", "arg3"]);
 
 #### Available methods
 
-|Method          | Params                                                                                 |
-|:---------------|:---------------------------------------------------------------------------------------|
-|resetValidation | *none*: Clear the icons, error state of the fields and clear the password field values |  
+|Method           | Params                                                                                                             |
+|:--------------- |:-------------------------------------------------------------------------------------------------------------------|
+|resetValidation  | *none*: Clear the icons, error state of the fields and clear the password field values                             |
+|displayAllErrors | *none*: Displays all errors, useful if you need to trigger error states based on other events, submit for example. |
 
 ### Road map
 ---
